@@ -1,0 +1,5 @@
+*.zip
+/temp
+/schemaorg
+/.vscode
+/transformer/__pycache__
