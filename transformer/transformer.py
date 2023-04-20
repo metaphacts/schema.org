@@ -18,6 +18,8 @@ def main():
   print(config)
   transformer=SdoTtlTransformer(config)
   transformer.write('../ontologies/schema-org.ttl')
+  transformer.writeShapes('../ontologies/schema-org-shacl-shapes.ttl')
+  transformer.writeOwl('../ontologies/schema-org-owl.ttl')
   
 if __name__ == "__main__":
   if not (sys.version_info.major == 3 and sys.version_info.minor > 5):

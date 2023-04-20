@@ -174,21 +174,17 @@ class SdoTtlTransformer():
     if datatypeonly == True:
       schemaProperty.setType('owl:DatatypeProperty')
     schemaProperty.checkForMultipleTypes()
-    # print(schemaProperty.getPropDef())
     if schemaProperty.isMixed == True:
       # removed all datatypeProps 
-      filterd=schemaProperty.ranges
+      filtered=schemaProperty.ranges
       needsIteration=True
 
       while needsIteration:
         needsIteration=False
-        for f in filterd:
+        for f in filtered:
           if (f in MAPPED_DATATYPES):
-            filterd.remove(f)
+            filtered.remove(f)
             needsIteration=True
-
-
-      #print(schemaProperty.getPropDef())
       self.mixedProps.append(schemaProperty)
       self.numMixedProperties+=1
     return schemaProperty
@@ -219,6 +215,7 @@ class SdoTtlTransformer():
     dcterms:modified \"%s\";
     rdfs:label "Schema.org Ontology";
     dcterms:title "Schema.org Ontology";
+    rdfs:description "Schema.org Vocabulary transformed to OWL";
     dcterms:description "Schema.org Vocabulary transformed to OWL". \n
 """ % (VOCABURI, getVersion(),getVersionDate(getVersion()))
     
@@ -229,6 +226,44 @@ class SdoTtlTransformer():
     print(self.ontologyDef)
     print(self.classes)
     print(self.shapes)
+
+
+  def writeOwl(self, filename):
+    f = open(filename,"w")
+    f.write(self.disclaimer)
+    f.write(self.prefixDef)
+    f.write(self.ontologyDef)
+    f.write("######################################### \n")
+    f.write("#\t\t\t Class Definitions  \n")
+    f.write("######################################### \n\n")
+    for x in self.classes:
+      f.write(x.getRepresentation())
+
+    f.write("######################################### \n")
+    f.write("#\t\t\t ObjectProperty Definitions  \n")
+    f.write("######################################### \n\n")
+    
+    for x in self.properties:
+      if x.propType == 'owl:ObjectProperty':
+        f.write(x.getPropDef())
+
+    f.write("######################################### \n")
+    f.write("#\t\t\t DatatypeProperty Definitions \n")
+    f.write("######################################### \n\n")
+    for x in self.properties:
+      if x.propType == 'owl:DatatypeProperty':
+        f.write(x.getPropDef())
+
+  def writeShapes(self, filename):
+    f = open(filename,"w")
+    f.write("######################################### \n")
+    f.write("#\t\t\t Schema.Org SHACL shape Definitions  \n")
+    f.write("######################################### \n\n")
+    for x in self.shapes:
+      if x:
+        f.write(x.getShapeDef())
+
+    f.close()
 
 
    
