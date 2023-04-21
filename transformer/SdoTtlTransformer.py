@@ -20,6 +20,8 @@ class SdoTtlTransformer():
     self.numMixedProperties = 0
     self.numAllProperties = 0
     self.propertyMapper=config.get('propertyMapper')
+    self.filteredClasses=config.get('filteredClasses')
+    self.filteredProperties=config.get('filteredProperties')
 
    
     
@@ -227,8 +229,58 @@ class SdoTtlTransformer():
     print(self.classes)
     print(self.shapes)
 
+  def filterClasses(self):
+    existingClasses=self.classes
+    filteringArray=self.filteredClasses
+    filteredResult=[]
+    for item in filteringArray:
+      for existingClass in existingClasses:
+        stringUri=str(existingClass.uri)
+        if stringUri == item:
+          filteredResult.append(existingClass)
+    self.classes=filteredResult
+
+  def filterPropertiesAndShapes(self):
+    existingProps=self.properties
+    existingShapes=self.shapes
+    filteringArray=self.filteredProperties
+    filteredResultProps=[]
+    filteredResultShapes=[]
+    for item in filteringArray:
+      for existingProp in existingProps:
+        stringUri=str(existingProp.uri)
+        if stringUri == item:
+          if existingProp not in filteredResultProps:
+            filteredResultProps.append(existingProp)
+
+      for existingShape in existingShapes:
+        stringUri=str(existingShape.prop.uri)
+        if stringUri == item:
+          #check if domains are applicable
+          existingShape.filterByExistingDomains(self.classes)
+          if existingShape not in filteredResultShapes:
+            filteredResultShapes.append(existingShape)
+
+    self.properties=filteredResultProps
+    self.shapes=filteredResultShapes
+
+  def applyFilters(self):
+     #apply filters
+    if self.filteredProperties !=None or self.filteredClasses !=None:
+      
+      if len(self.filteredClasses)==0:
+        print("No Classes filtered")
+      else:
+        self.filterClasses()
+      if len(self.filteredProperties)==0:
+        print("No Properties filtered")
+      else:
+        self.filterPropertiesAndShapes()
+
 
   def writeOwl(self, filename):
+    self.applyFilters()
+
     f = open(filename,"w")
     f.write(self.disclaimer)
     f.write(self.prefixDef)
@@ -255,6 +307,7 @@ class SdoTtlTransformer():
         f.write(x.getPropDef())
 
   def writeShapes(self, filename):
+    self.applyFilters()
     f = open(filename,"w")
     f.write("######################################### \n")
     f.write("#\t\t\t Schema.Org SHACL shape Definitions  \n")
@@ -268,6 +321,7 @@ class SdoTtlTransformer():
 
    
   def write(self,filename):
+    self.applyFilters()
     f = open(filename,"w")
     f.write(self.disclaimer)
     f.write(self.prefixDef)
