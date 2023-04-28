@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 
+import subprocess
 from sdoConstants import *
 from OwlProperty import *
 from OwlClass import *
@@ -196,15 +197,18 @@ class SdoTtlTransformer():
     x=ShaclShape(prop)
     self.shapes.append(x)
 
+  def get_git_revision_short_hash(self) -> str:
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
 
 
   def createStaticInformation(self):
     self.disclaimer = """########
 # Generated from Schema.org version: %s released: %s
 # Using Metaphacts transformation script.
+# Transformer Version (commit id): %s
 # @Author: Vitalis Wiens
 ######## 
-""" % (getVersion(),getVersionDate(getVersion()))
+""" % (getVersion(),getVersionDate(getVersion()),self.get_git_revision_short_hash())
     
     self.prefixDef=''
     for (k,v) in NAMESPACES.items():
@@ -218,8 +222,21 @@ class SdoTtlTransformer():
     rdfs:label "Schema.org Ontology";
     dcterms:title "Schema.org Ontology";
     rdfs:description "Schema.org Vocabulary transformed to OWL";
+    rdfs:comment "Schema.org Vocabulary transformed to OWL";
     dcterms:description "Schema.org Vocabulary transformed to OWL". \n
 """ % (VOCABURI, getVersion(),getVersionDate(getVersion()))
+    
+    comment="Schema.org Vocabulary transformed to OWL with additional SHACL shapes."
+    self.ontologyDefAndShapes="""
+<%s> a owl:Ontology;
+    owl:versionInfo \"%s\";
+    dcterms:modified \"%s\";
+    rdfs:label "Schema.org Ontology";
+    dcterms:title "Schema.org Ontology";
+    rdfs:description \"%s\";
+    rdfs:comment \"%s\";
+    dcterms:description \"%s\". \n
+""" % (VOCABURI, getVersion(),getVersionDate(getVersion()),comment,comment,comment)
     
   def show(self):
     print("Created OWL TTL representation")
@@ -310,7 +327,7 @@ class SdoTtlTransformer():
     self.applyFilters()
     f = open(filename,"w")
     f.write(self.prefixDef)
-    f.write("######################################### \n")
+    f.write("\n######################################### \n")
     f.write("#     Schema.Org SHACL shape Definitions  \n")
     f.write("######################################### \n\n")
     for x in self.shapes:
@@ -326,7 +343,7 @@ class SdoTtlTransformer():
     f = open(filename,"w")
     f.write(self.disclaimer)
     f.write(self.prefixDef)
-    f.write(self.ontologyDef)
+    f.write(self.ontologyDefAndShapes)
     f.write("######################################### \n")
     f.write("#\t\t\t Class Definitions  \n")
     f.write("######################################### \n\n")
