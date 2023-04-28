@@ -286,13 +286,13 @@ class SdoTtlTransformer():
     f.write(self.prefixDef)
     f.write(self.ontologyDef)
     f.write("######################################### \n")
-    f.write("#\t\t\t Class Definitions  \n")
+    f.write("#       Class Definitions  \n")
     f.write("######################################### \n\n")
     for x in self.classes:
       f.write(x.getRepresentation())
 
     f.write("######################################### \n")
-    f.write("#\t\t\t ObjectProperty Definitions  \n")
+    f.write("#       ObjectProperty Definitions  \n")
     f.write("######################################### \n\n")
     
     for x in self.properties:
@@ -300,7 +300,7 @@ class SdoTtlTransformer():
         f.write(x.getPropDef())
 
     f.write("######################################### \n")
-    f.write("#\t\t\t DatatypeProperty Definitions \n")
+    f.write("#     DatatypeProperty Definitions \n")
     f.write("######################################### \n\n")
     for x in self.properties:
       if x.propType == 'owl:DatatypeProperty':
@@ -309,8 +309,9 @@ class SdoTtlTransformer():
   def writeShapes(self, filename):
     self.applyFilters()
     f = open(filename,"w")
+    f.write(self.prefixDef)
     f.write("######################################### \n")
-    f.write("#\t\t\t Schema.Org SHACL shape Definitions  \n")
+    f.write("#     Schema.Org SHACL shape Definitions  \n")
     f.write("######################################### \n\n")
     for x in self.shapes:
       if x:
