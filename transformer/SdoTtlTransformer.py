@@ -198,7 +198,12 @@ class SdoTtlTransformer():
     self.shapes.append(x)
 
   def get_git_revision_short_hash(self) -> str:
-    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
+    
+    os.chdir("..")
+    commitVersion=subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
+    os.chdir("schemaorg")
+    print("VERSION", commitVersion)
+    return commitVersion
 
 
   def createStaticInformation(self):
