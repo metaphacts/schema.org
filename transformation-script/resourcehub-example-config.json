@@ -9,7 +9,8 @@
     "https://schema.org/dateCreated":"http://www.w3.org/2001/XMLSchema#date",
     "https://schema.org/startEnd":"http://www.w3.org/2001/XMLSchema#date",
     "https://schema.org/author":"http://ontologies.metaphacts.com/resourcehub/Agent",
-    "https://schema.org/contributor":"http://ontologies.metaphacts.com/resourcehub/Agent"
+    "https://schema.org/contributor":"http://ontologies.metaphacts.com/resourcehub/Agent",
+    "https://schema.org/location":"https://schema.org/Place"
   },
   "filteredClasses":[
     "https://schema.org/Thing",
@@ -23,7 +24,8 @@
     "https://schema.org/VideoObject",
     "https://schema.org/SocialMediaPosting",
     "https://schema.org/BlogPosting",
-    "https://schema.org/ScholarlyArticle"
+    "https://schema.org/ScholarlyArticle",
+    "https://schema.org/Location"
   ],
   "filteredProperties":[
     "https://schema.org/name",
