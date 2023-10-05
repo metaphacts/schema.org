@@ -11,7 +11,7 @@ else
   cd ${DIR}
   # checkout the latest stable tag which has the proper versions in 
   # the file versions.json and create new branch for that
-  git checkout -b metaphacts-schema-org-transformation-script tags/v15.0-release  
+  git checkout -b metaphacts-schema-org-transformation-script tags/v22.0-release  
   cd ..
 fi
 python3 ./transformation-script/transformationScript.py

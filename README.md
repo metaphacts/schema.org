@@ -1,10 +1,15 @@
 # metaphacts schema.org Ontology Transformation Script
 
+## Requirements
+In order to execute the transformation script locally,  Python version 3.6 and above is required. 
+Please also note that when you execute the script for the first time, it may fail if requirements are not satisfied (see section [How to use](#how-to-use) ).
+
+
 ## Description
 We have created a transformation script for the schema.org Ontology that creates an OWL ontology and the corresponding SHACL shapes. 
 The transformation script builds upon the existing schema.org python scripts. 
 
-Our build script downloads the schema.org repository from git (https://github.com/schemaorg/schemaorg) and checks out the latest stable release (currently `tags/v15.0-release`).
+Our build script downloads the schema.org repository from git (https://github.com/schemaorg/schemaorg) and checks out the latest stable release (currently `tags/v22.0-release`).
 
 ### Heuristics
 schema.org typically uses `rdf:Property` and additional `domainIncludes` or `rangeIncludes` to define attribute and relations for classes.

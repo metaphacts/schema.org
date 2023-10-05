@@ -6,9 +6,11 @@
     "https://schema.org/layoutImage":"http://www.w3.org/2001/XMLSchema#anyURI",
     "https://schema.org/photo":"http://www.w3.org/2001/XMLSchema#anyURI",
     "https://schema.org/jobTitle":"http://www.w3.org/2001/XMLSchema#string",
+    "https://schema.org/identifier":"http://www.w3.org/2001/XMLSchema#string",
     "https://schema.org/startDate":"http://www.w3.org/2001/XMLSchema#date",
     "https://schema.org/dateCreated":"http://www.w3.org/2001/XMLSchema#date",
     "https://schema.org/endDate":"http://www.w3.org/2001/XMLSchema#date",
+    "https://schema.org/timeRequired":"http://www.w3.org/2001/XMLSchema#dateTime",
     "https://schema.org/author":"http://ontologies.metaphacts.com/resourcehub/Agent",
     "https://schema.org/contributor":"http://ontologies.metaphacts.com/resourcehub/Agent",
     "https://schema.org/location":"https://schema.org/Place"

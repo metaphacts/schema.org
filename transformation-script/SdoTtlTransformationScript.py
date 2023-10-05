@@ -182,8 +182,10 @@ class SdoTtlTransformationScript():
           if (f in MAPPED_DATATYPES):
             filtered.remove(f)
             needsIteration=True
-      self.mixedProps.append(schemaProperty)
-      self.numMixedProperties+=1
+     
+      schemaProperty.ranges=filtered
+      schemaProperty.setType('owl:ObjectProperty')
+      schemaProperty.isMixed = False
     return schemaProperty
   
   def outputShape(self,prop):
