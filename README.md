@@ -1,10 +1,15 @@
-# metaphacts schema.org Ontology Transformer
+# metaphacts schema.org Ontology Transformation Script
+
+## Requirements
+In order to execute the transformation script locally,  Python version 3.6 and above is required. 
+Please also note that when you execute the script for the first time, it may fail if requirements are not satisfied (see section [How to use](#how-to-use) ).
+
 
 ## Description
-We have created a transformer for the schema.org Ontology that creates an OWL ontology and the corresponding SHACL shapes. 
-The transformer builds upon the existing schema.org python scripts. 
+We have created a transformation script for the schema.org Ontology that creates an OWL ontology and the corresponding SHACL shapes. 
+The transformation script builds upon the existing schema.org python scripts. 
 
-Our build script downloads the schema.org repository from git (https://github.com/schemaorg/schemaorg) and checks out the latest stable release (currently `tags/v15.0-release`).
+Our build script downloads the schema.org repository from git (https://github.com/schemaorg/schemaorg) and checks out the latest stable release (currently `tags/v22.0-release`).
 
 ### Heuristics
 schema.org typically uses `rdf:Property` and additional `domainIncludes` or `rangeIncludes` to define attribute and relations for classes.
@@ -32,7 +37,8 @@ Please note that all other ranges will be removed.
 The configuration file provides additional means to filter only related classes and properties for specific use cases. 
 We provide an example configuration file for the resourcehub use case `resourcehub-example-config.json`. 
 
-Please not that the transformer takes the content of the `config.json` file for mappings and filtering. Additionally, these filtering mechanisms do not provide any reasoning on subclasses or the inherited properties form superclasses.
+Please note that the transformation script takes the content of the `config.json` file for mappings and filtering.
+Additionally, these filtering mechanisms do not provide any reasoning on subclasses or the inherited properties form superclasses.
 
 ###  Shapes and Restrictions
 We exclude `rdfs:domain` and `rdfs:range` form the generation.
@@ -52,6 +58,7 @@ Only SHACL shapes of the schema.org model
 ## How to use
 * `./build.sh` 
   * Downloads the schema.org repository and switch to the lates stable release version based on the branch tag (currently `tags/v15.0-release`)
-  * Please note: you might need to install additional python modules to execute the the transformer. The `schemaorg/software` has the `requirements.txt` file. Please switch to this folder and execute `pip3 install -r requirements.txt` if additional packages are required. 
+  * Please note: you might need to install additional python modules to execute the the transformation script. The `schemaorg/software` has the `requirements.txt` file.
+    Please switch to this folder and execute `pip3 install -r requirements.txt` if additional packages are required. 
 
 * run `./clear.sh` to remove the `schemaorg` git repository from the file system

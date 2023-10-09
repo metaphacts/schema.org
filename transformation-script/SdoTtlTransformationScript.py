@@ -9,7 +9,7 @@ from OwlClass import *
 from ShaclShape import *
 
 
-class SdoTtlTransformer():
+class SdoTtlTransformationScript():
 
   def __init__(self, config):
     self.config=config 
@@ -24,14 +24,8 @@ class SdoTtlTransformer():
     self.filteredClasses=config.get('filteredClasses')
     self.filteredProperties=config.get('filteredProperties')
 
-   
-    
-
     self.createStaticInformation()
     self.loadGraph()
-    # print("Number of mixed Properties", self.numMixedProperties, "/", len(self.properties))
-    # for x in self.mixedProps:
-    #   print(str(x.uri), x.ranges)
 
   def mapPropertyByConfig(self,prop, object):
     if self.propertyMapper:
@@ -135,7 +129,7 @@ class SdoTtlTransformer():
             elif p == RDFS.subClassOf:
                cls += ";\n\t rdfs:subClassOf <%s>" % (o)
                owlClass.subClasses.append(o)
-# >> TODO: Currently removed from extraction script
+# >> Currently removed from extraction script
 ###################################
 #           elif p == URIRef(VOCABURI + "isPartOf"): #Defined in an extension
 #               ext = str(o)
@@ -188,8 +182,10 @@ class SdoTtlTransformer():
           if (f in MAPPED_DATATYPES):
             filtered.remove(f)
             needsIteration=True
-      self.mixedProps.append(schemaProperty)
-      self.numMixedProperties+=1
+     
+      schemaProperty.ranges=filtered
+      schemaProperty.setType('owl:ObjectProperty')
+      schemaProperty.isMixed = False
     return schemaProperty
   
   def outputShape(self,prop):
@@ -202,7 +198,6 @@ class SdoTtlTransformer():
     os.chdir("..")
     commitVersion=subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('ascii').strip()
     os.chdir("schemaorg")
-    print("VERSION", commitVersion)
     return commitVersion
 
 
@@ -210,7 +205,7 @@ class SdoTtlTransformer():
     self.disclaimer = """########
 # Generated from Schema.org version: %s released: %s
 # Using Metaphacts transformation script.
-# Transformer Version (commit id): %s
+# Transformation Script Version (commit id): %s
 # @Author: Vitalis Wiens
 ######## 
 """ % (getVersion(),getVersionDate(getVersion()),self.get_git_revision_short_hash())
